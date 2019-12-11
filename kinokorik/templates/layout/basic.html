@@ -1,0 +1,60 @@
+{% load bootstrap4 %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+	<meta name="viewport" content="width=device-width, initial-scale=l, shrink-to-fit=no"> 
+	<title>{% block title %}Main{% endblock %} - Movie Store</title>
+	{% bootstrap_css %}
+	<link rel="stylesheet" type="text/css" href="{% static 'main/style.css' %}">
+	{% bootstrap_javascript jquery='slim' %} 
+</head>
+<body class="container-fluid">
+	<header class="mb-4">
+		<h1 class="display-1 text-center">Kinokørik</h1>
+	</header>
+	<div class="row">
+		<ul class="col nav justify-content-end border">
+			{% if user.is_authenticated %}
+			<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Profile</a>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="{% url 'main:profile' %}">My Movies</a>
+					<a class="dropdown-item" href="{% url 'main:profile_change' %}">Change personal data</a>
+					<a class="dropdown-item" href="{% url 'main:password_change'%}">Change password</a>
+					<div class="dropdown-divider"></div> 
+					<a class="dropdown-item" href="{% url 'main:logout' %}">Exit</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="{% url 'main:profile_delete' %}">Delete</a> 
+				</div>
+			</li>
+			{% else %}
+			<li class="nav-item"><a class="nav-link" href="{% url 'main:login' %}">Log in</a></li>
+			{% endif %}
+			<li class="nav-item"><a class="nav-link" href="{% url 'main:register' %}">Register</a></li>
+		</ul>
+	</div>
+	<div class="row">
+		<nav class="col-md-auto nav flex-column border">
+			<a class="main-class root" href="{% url 'main:index' %}">Main</a>
+			{% for category in categories %}
+			{% ifchanged category.super_category.pk %}
+			<span class="span-class root font-weight-bold">{{ category.super_category.name }}</span>
+			{% endifchanged %}
+			<a href="{% url 'main:by_category' pk=category.pk %}">{{ category.name }}</a>
+			{% endfor %}
+			<p></p>
+			<a class="about-site" href="{% url 'main:other' page='about' %}">About web-site</a>
+		</nav>
+		<section class="col border py-2">
+			{% bootstrap_messages %}
+			{% block content %}
+			{% endblock %}
+		</section>
+	</div>
+	<footer class="mt-3">
+		<p class="text-right font-italic">$copy; readers, 2019</p>
+	</footer>
+</body>
+</html>

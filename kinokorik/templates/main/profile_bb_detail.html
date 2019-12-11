@@ -1,0 +1,34 @@
+{% extends "layout/basic.html" %}
+
+{% block title %}{{ bb.title }} - {{ bb.category.name }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-3">
+	<div class="row">
+		{%if bb.image %}
+		<div class="col-md-auto">
+			<img src="{{ bb.image.url }}" class="main_image"></div>
+		{% endif %}
+		<div class="col">
+			<h2>{{ bb.title }}</h2>
+			<p>{{ bb.content }}</p>
+			<p>{{ bb.contacts }}</p>
+			<p class="text-right font-italic">Movie Added {{ bb.created_at }}</p>
+			<p class="text-right mt-2">
+				<a href="{% url 'main:profile_bb_delete' pk=bb.pk %}">Delete</a>
+			</p> 
+		</div>
+	</div>
+</div>
+{% if ais %}
+<div class="d-flex justify-content-between flex-wrap mt-5">
+	{% for ai in ais %}
+	<div>
+		<img  class="additional_image" src="{{ ai.image.url }}">
+	</div>
+	{% endfor %}
+</div>
+{% endif %}
+<p></p>
+<p><a href="{% url 'main:profile' %}">Back</a></p>
+{% endblock %}
